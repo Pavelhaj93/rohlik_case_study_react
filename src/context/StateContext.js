@@ -5,6 +5,18 @@ const Context = createContext();
 export const StateContext = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showCart, setShowCart] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0)
+
+  const onAdd = (product, quantity) => {
+
+  }
+
+  useEffect(() => {
+
+      console.log(showCart)
+  }, [showCart])
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -24,6 +36,12 @@ export const StateContext = ({ children }) => {
         setProducts,
         searchTerm,
         setSearchTerm,
+        showCart,
+        setShowCart,
+        cartItems,
+        setCartItems,
+        totalPrice,
+        setTotalPrice
       }}
     >
       {children}
