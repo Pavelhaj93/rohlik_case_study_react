@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
@@ -8,16 +8,27 @@ import Cart from "./Cart";
 import { useStateContext } from '../context/StateContext';
 
 const Navbar = () => {
-  const { showCart, setShowCart } = useStateContext();
+  const { showCart, setShowCart, totalQuantities, setSearchTerm } = useStateContext();
 
 
   return (
     <>
       <NavContainer>
         <img src={logo} alt="logo" width={100} height={50} />
-        {showCart === false ?  <CartButton type="button" onClick={() => setShowCart(!showCart)}>
+        <FilterContainer>
+        <input
+          type="text"
+          placeholder="Search products..."
+          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+          style={{ width: "300px" }}
+        />
+      </FilterContainer>
+        <CartButton type="button" onClick={() => setShowCart(!showCart)}>
             <ShoppingCartIcon />
-        </CartButton> : ''}
+            <QtySpan>
+              {totalQuantities}
+            </QtySpan>
+        </CartButton>
         {showCart && <Cart />}
       </NavContainer>
     </>
@@ -32,6 +43,10 @@ const NavContainer = styled.div`
      display: flex;
      justify-content: space-between;
      padding: 1em 2em;
+     position: fixed;
+     background-color: white;
+     width: 100vw;
+     z-index: 3;
   }
 `;
 
@@ -43,3 +58,27 @@ const CartButton = styled.button`{
   border-radius: 50%;
 
 }`
+
+const QtySpan = styled.span`{
+  position: absolute;
+  top: 50px;
+	right: 38px;
+	font-size: 16px;
+	color: #eee;
+	background-color: #f02d34;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	text-align: center;
+	font-weight: 600;
+  text-align: center;
+}`
+
+const FilterContainer = styled.div`
+   {
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    z-index: 4;
+  }
+`; 

@@ -1,28 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
+
 import { useStateContext } from "../context/StateContext";
 
 const Product = () => {
-  const { products, setProducts, searchTerm, setSearchTerm } =
-    useStateContext();
+  const { products, setSearchTerm, quantity, onAdd } = useStateContext();
 
   return (
-    <>
-      <FilterContainer>
-        <input
-          type="text"
-          placeholder="Search..."
-          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-        />
-      </FilterContainer>
+    <MainContainer>
+      
       <ProductsContainer>
         {products.map((product) => {
           return (
             <ProductCard key={product.id}>
               <img
                 src={product.image}
-                height={100}
+                height={150}
                 width={150}
                 alt="product-img"
               />
@@ -32,6 +26,7 @@ const Product = () => {
                   style={{ margin: "0 1em" }}
                   variant="contained"
                   color="primary"
+                  onClick={() => onAdd(product, quantity)}
                 >
                   Add to Cart
                 </Button>
@@ -51,27 +46,29 @@ const Product = () => {
           );
         })}
       </ProductsContainer>
-    </>
+    </MainContainer>
   );
 };
 
 export default Product;
 
-const FilterContainer = styled.div`{
-  height: 2em;
-  display: flex;
-  justify-content: center;
+const MainContainer = styled.div`{
+  width: 100vw;
+  padding-top: 5em;
 }`
+
+
 
 const ProductCard = styled.div`
    {
     display: flex;
     flex-direction: column;
     width: 18%;
-    height: 20em;
-    border: 1px solid red;
+    height: 28em;
+    border: 2px solid grey;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
   }
 `;
 
@@ -104,3 +101,22 @@ const ButtonsContainer = styled.div`
     justify-content: space-between;
   }
 `;
+
+// const QuantityContainer = styled.div`
+//    {
+//     display: flex;
+//     width: 50%;
+//     align-items: center;
+//     justify-content: space-between;
+//   }
+// `;
+
+// const QtyButton = styled.button`
+//    {
+//     background-color: transparent;
+//     height: 3em;
+//     cursor: pointer;
+//     border: 1px solid black;
+//     border-radius: 50%;
+//   }
+// `;
