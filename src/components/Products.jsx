@@ -58,18 +58,32 @@ const MainContainer = styled.div`{
   padding-top: 5em;
 }`
 
-
-
 const ProductCard = styled.div`
    {
     display: flex;
     flex-direction: column;
     width: 18%;
     height: 28em;
-    border: 2px solid grey;
+    border: 1px solid grey;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
+   
+    @media (min-width: 1265px) and (max-width: 1350px) {
+      width: 20%
+    }
+
+    @media (min-width: 950px) and (max-width: 1264px) {
+      width: 30%
+    }
+
+    @media (min-width: 600px) and (max-width: 950px) {
+      width: 45%
+    }
+
+    @media (max-width: 600px) {
+      width: 100%
+    }
   }
 `;
 

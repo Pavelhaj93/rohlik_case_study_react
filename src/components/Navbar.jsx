@@ -20,7 +20,7 @@ const Navbar = () => {
           type="text"
           placeholder="Search products..."
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-          style={{ width: "300px" }}
+          style={{ width: "300px", height: "3em" }}
         />
       </FilterContainer>
         <CartButton type="button" onClick={() => setShowCart(!showCart)}>
@@ -39,7 +39,7 @@ export default Navbar;
 
 const NavContainer = styled.div`
    {
-     height: 8vh;
+     height: 10vh;
      display: flex;
      justify-content: space-between;
      padding: 1em 2em;
@@ -47,6 +47,11 @@ const NavContainer = styled.div`
      background-color: white;
      width: 100vw;
      z-index: 3;
+     border-bottom: 1px solid grey;
+
+     @media (max-width: 600px) {
+       height: 15vh;
+     }
   }
 `;
 
@@ -76,9 +81,10 @@ const QtySpan = styled.span`{
 
 const FilterContainer = styled.div`
    {
-    height: 2em;
+    height: 3em;
     display: flex;
     justify-content: center;
+    align-items: center;
     z-index: 4;
   }
 `; 

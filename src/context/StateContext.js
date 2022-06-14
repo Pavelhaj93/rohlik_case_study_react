@@ -11,17 +11,18 @@ export const StateContext = ({ children }) => {
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  // Persist logic saving
+  // Persist logic saving to the localStorage
   useEffect(() => {
     if (cartItems?.length) {
       window.localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   }, [cartItems]);
 
-  // Persist logic loading the cartItems and calculating the price from all the element in the storage
+  // Persist logic loading the cartItems and calculating the price from all the element in the localStorage
   useEffect(() => {
     if (cartItems.length === 0) {
       const persist = JSON.parse(window.localStorage.getItem("cartItems"));
+      // if there is something in localStorage then we setCartItems the localStorage items and also count TotalPrice from all the elements in the storage and multiply by quantity
       if (persist && persist.length > 0) {
         setCartItems(persist);
         let total = 0.0;
@@ -33,9 +34,13 @@ export const StateContext = ({ children }) => {
     }
   }, [cartItems]);
 
+
+  // Add function logic we pass in the product and quantity from global state(quantity state prepared to make logic of increment and decrement function)
   const onAdd = (product, quantity) => {
+    // First we check if the same product is already in the cart or not
     const checkProductInCart = cartItems.find((item) => item.id === product.id);
 
+    // we adding the product a new propert quantity
     if (checkProductInCart) {
       const updatedCartItems = cartItems.map((cartProduct) => {
         if (cartProduct.id === product.id)
@@ -54,24 +59,25 @@ export const StateContext = ({ children }) => {
     }
   };
 
+  // Remove logic
   const onRemove = (product) => {
     const newCartItems = cartItems.filter((item) => item.id !== product.id);
 
     setCartItems(newCartItems);
   };
 
+  // Empty cart logic
+  const handleEmpty = () => {
+    window.localStorage.removeItem("cartItems");
+    setCartItems([])  
+  };
+
+  // Setting the total quantities for the red circle at cart icon
   useEffect(() => {
-    const calculatePrice = cartItems.map((cartItem) => {
-      return cartItem.quantity * cartItem.price.full;
-    });
-    console.log(totalPrice, "totalPrice");
-
-    console.log(cartItems, "cart");
-
-    // setTotalPrice(calculatePrice);
     setTotalQuantities(cartItems.length);
   }, [cartItems]);
 
+  // Filter logic, if the filter is empty we show all the products, if not we filter if the searchTerm in lowerCase is included in product name
   useEffect(() => {
     if (searchTerm === "") {
       setProducts(data);
@@ -102,6 +108,7 @@ export const StateContext = ({ children }) => {
         totalQuantities,
         setTotalQuantities,
         onRemove,
+        handleEmpty
       }}
     >
       {children}

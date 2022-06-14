@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
@@ -6,12 +6,19 @@ import { Button } from "@material-ui/core";
 import { useStateContext } from "../context/StateContext";
 
 const Cart = () => {
-  const { showCart, setShowCart, cartItems, totalPrice, products } =
-    useStateContext();
+  const {
+    showCart,
+    setShowCart,
+    cartItems,
+    handleEmpty,
+    totalPrice,
+    products,
+    onRemove
+  } = useStateContext();
 
-    useEffect(()=>{
-      console.log("cartItems", cartItems)
-    },[cartItems])
+  useEffect(() => {
+    console.log("cartItems", cartItems);
+  }, [cartItems]);
 
   return (
     <>
@@ -50,6 +57,11 @@ const Cart = () => {
                       Price: {item.price.full} {item.price.currency}
                     </span>
                     <span>Quantity: {item.quantity}</span>
+                    <div>
+                      <Button variant="contained" color="secondary" size="small" onClick={() => onRemove(item)}>
+                        Remove
+                      </Button>
+                    </div>
                   </CartProductDesc>
                 </CartProductCard>
               ))}
@@ -57,12 +69,16 @@ const Cart = () => {
               <PriceContainer>
                 <h4>Total price:</h4>
                 <h4>
-                  {parseFloat(totalPrice).toFixed(2)} 
+                  {parseFloat(totalPrice).toFixed(2)}
                   {products[1].price.currency}
                 </h4>
               </PriceContainer>
-              <Button variant="contained" color="primary">
-                Checkout
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => handleEmpty()}
+              >
+                Empty Cart
               </Button>
             </FullCart>
           </>
@@ -78,7 +94,7 @@ const CartContainer = styled.div`
    {
     width: 400px;
     background-color: white;
-    border: 2px solid red;
+    border: 1px solid grey;
     position: fixed;
     right: 0;
     top: 0;
@@ -94,10 +110,10 @@ const CartButton = styled.button`
     background-color: transparent;
     height: 3em;
     cursor: pointer;
-    border: 1px solid black;
+    border: 1px solid grey;
     border-radius: 50%;
     position: fixed;
-    right: 3.5em;
+    right: 2.5em;
     top: 1.3em;
   }
 `;
