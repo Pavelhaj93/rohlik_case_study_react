@@ -11,9 +11,29 @@ export const StateContext = ({ children }) => {
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const onAdd = (product, quantity) => {
-    console.log(product);
+  // Persist logic saving
+  useEffect(() => {
+    if (cartItems?.length) {
+      window.localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }
+  }, [cartItems]);
 
+  // Persist logic loading the cartItems and calculating the price from all the element in the storage
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      const persist = JSON.parse(window.localStorage.getItem("cartItems"));
+      if (persist && persist.length > 0) {
+        setCartItems(persist);
+        let total = 0.0;
+        persist.forEach((element) => {
+          total += element.price.full * element.quantity;
+        });
+        setTotalPrice(total);
+      }
+    }
+  }, [cartItems]);
+
+  const onAdd = (product, quantity) => {
     const checkProductInCart = cartItems.find((item) => item.id === product.id);
 
     if (checkProductInCart) {
@@ -23,29 +43,34 @@ export const StateContext = ({ children }) => {
             ...cartProduct,
             quantity: cartProduct.quantity + quantity,
           };
+        else return cartProduct;
       });
       setCartItems(updatedCartItems);
+      setTotalPrice((totalPrice) => totalPrice + product.price.full);
     } else {
       product.quantity = quantity;
-
-      setCartItems([...cartItems, { ...product }]);
+      setTotalPrice((totalPrice) => totalPrice + product.price.full);
+      setCartItems((cartItems) => [...cartItems, product]);
     }
+  };
 
-    
+  const onRemove = (product) => {
+    const newCartItems = cartItems.filter((item) => item.id !== product.id);
+
+    setCartItems(newCartItems);
   };
 
   useEffect(() => {
     const calculatePrice = cartItems.map((cartItem) => {
-        return (
-            cartItem.quantity * cartItem.price.full
-        )
-    })
-    console.log(totalPrice, "totalPrice")
-    console.log(cartItems, "cart");
-    setTotalPrice(calculatePrice)
-    setTotalQuantities(cartItems.length);
-}, [cartItems])
+      return cartItem.quantity * cartItem.price.full;
+    });
+    console.log(totalPrice, "totalPrice");
 
+    console.log(cartItems, "cart");
+
+    // setTotalPrice(calculatePrice);
+    setTotalQuantities(cartItems.length);
+  }, [cartItems]);
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -76,6 +101,7 @@ export const StateContext = ({ children }) => {
         onAdd,
         totalQuantities,
         setTotalQuantities,
+        onRemove,
       }}
     >
       {children}

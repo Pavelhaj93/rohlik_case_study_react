@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { useStateContext } from "../context/StateContext";
 
 const Product = () => {
-  const { products, setSearchTerm, quantity, onAdd } = useStateContext();
+  const { products, quantity, onAdd, onRemove } = useStateContext();
 
   return (
     <MainContainer>
@@ -35,6 +35,7 @@ const Product = () => {
                   variant="contained"
                   color="secondary"
                   size="small"
+                  onClick={() => onRemove(product)}
                 >
                   Remove from Cart
                 </Button>

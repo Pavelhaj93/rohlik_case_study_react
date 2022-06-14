@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect} from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
@@ -8,6 +8,10 @@ import { useStateContext } from "../context/StateContext";
 const Cart = () => {
   const { showCart, setShowCart, cartItems, totalPrice, products } =
     useStateContext();
+
+    useEffect(()=>{
+      console.log("cartItems", cartItems)
+    },[cartItems])
 
   return (
     <>
@@ -33,7 +37,7 @@ const Cart = () => {
           <>
             <FullCart>
               {cartItems.map((item) => (
-                <CartProductCard>
+                <CartProductCard key={item.id}>
                   <img
                     src={item.image}
                     alt="cartItem-img"
