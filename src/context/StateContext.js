@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+
 import data from "../data/products.json";
+
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
@@ -34,8 +36,7 @@ export const StateContext = ({ children }) => {
     }
   }, [cartItems]);
 
-
-  // Add function logic we pass in the product and quantity from global state(quantity state prepared to make logic of increment and decrement function)
+  // Add function logic we pass in the product and quantity from global state
   const onAdd = (product, quantity) => {
     // First we check if the same product is already in the cart or not
     const checkProductInCart = cartItems.find((item) => item.id === product.id);
@@ -59,17 +60,43 @@ export const StateContext = ({ children }) => {
     }
   };
 
+  const onDecrease = (product, quantity, onRemove) => {
+
+    // if quantity is 1 we no longer want to decrease qty to 0 so we stop the function 
+    if (product.quantity === 1) {
+      return
+    }
+
+    // same logic as onAdd but we decrement quantity and totalPrice
+    const updatedCartItems = cartItems.map((cartProduct) => {
+      if (cartProduct.id === product.id)
+        return {
+          ...cartProduct,
+          quantity: cartProduct.quantity - quantity,
+        };
+      else return cartProduct;
+    });
+    setCartItems(updatedCartItems);
+    setTotalPrice((totalPrice) => totalPrice - product.price.full);
+  };
+
   // Remove logic
   const onRemove = (product) => {
     const newCartItems = cartItems.filter((item) => item.id !== product.id);
 
     setCartItems(newCartItems);
+    setTotalPrice((totalPrice) => totalPrice - product.quantity * product.price.full )
+
+    // When removing the last product, it stayed in the cart because it was always loaded from localStorage so the handleEmpty function is needed to call to clear whole cart
+    if (cartItems.length === 1) {
+      handleEmpty();
+    }
   };
 
   // Empty cart logic
   const handleEmpty = () => {
     window.localStorage.removeItem("cartItems");
-    setCartItems([])  
+    setCartItems([]);
   };
 
   // Setting the total quantities for the red circle at cart icon
@@ -108,7 +135,8 @@ export const StateContext = ({ children }) => {
         totalQuantities,
         setTotalQuantities,
         onRemove,
-        handleEmpty
+        handleEmpty,
+        onDecrease,
       }}
     >
       {children}

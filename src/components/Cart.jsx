@@ -13,7 +13,10 @@ const Cart = () => {
     handleEmpty,
     totalPrice,
     products,
-    onRemove
+    onAdd,
+    quantity,
+    onRemove,
+    onDecrease,
   } = useStateContext();
 
   useEffect(() => {
@@ -45,23 +48,49 @@ const Cart = () => {
             <FullCart>
               {cartItems.map((item) => (
                 <CartProductCard key={item.id}>
-                  <img
-                    src={item.image}
-                    alt="cartItem-img"
-                    width={100}
-                    height={100}
-                  />
+                  <ImgContainer>
+                    <img
+                      src={item.image}
+                      alt="cartItem-img"
+                      height={100}
+                      style={{ width: "100%", objectFit: "contain" }}
+                    />
+                  </ImgContainer>
                   <CartProductDesc>
                     <span>{item.name}</span>
                     <span>
-                      Price: {item.price.full} {item.price.currency}
+                      Total price: {Math.round((item.price.full * item.quantity) * 100) / 100} {item.price.currency}
                     </span>
                     <span>Quantity: {item.quantity}</span>
-                    <div>
-                      <Button variant="contained" color="secondary" size="small" onClick={() => onRemove(item)}>
-                        Remove
+                    <ButtonsContainer>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style={{ margin: "0 1em" }}
+                        onClick={() => onAdd(item, quantity)}
+                      >
+                        +
                       </Button>
-                    </div>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        style={{ margin: "0 1em" }}
+                        onClick={() => onDecrease(item, quantity)}
+                      >
+                        -
+                      </Button>
+                    </ButtonsContainer>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      style={{ margin: "0 1em" }}
+                      onClick={() => onRemove(item)}
+                    >
+                      Remove
+                    </Button>
                   </CartProductDesc>
                 </CartProductCard>
               ))}
@@ -69,7 +98,7 @@ const Cart = () => {
               <PriceContainer>
                 <h4>Total price:</h4>
                 <h4>
-                  {parseFloat(totalPrice).toFixed(2)}
+                  {Math.round(totalPrice * 100) / 100}
                   {products[1].price.currency}
                 </h4>
               </PriceContainer>
@@ -99,10 +128,8 @@ const CartContainer = styled.div`
     right: 0;
     top: 0;
     height: 100vh;
-    overflow-y: scroll;
-    z-index: 3;
-    box-shadow: blue;
-    transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    overflow-y: auto;
+    z-index: 4;
   }
 `;
 const CartButton = styled.button`
@@ -132,9 +159,10 @@ const EmptyCart = styled.div`
 const FullCart = styled.div`
    {
     display: flex;
-    height: 100%;
+    min-height: 100vh;
     flex-direction: column;
-    padding: 2em;
+    padding: 3em 1em 2em 1em;
+    // padding-bottom: 2em;
   }
 `;
 
@@ -142,7 +170,7 @@ const CartProductCard = styled.div`
    {
     display: flex;
     margin: 2em 0;
-    height: 5em;
+    height: 8em;
   }
 `;
 
@@ -153,11 +181,27 @@ const CartProductDesc = styled.div`
     margin-left: 2em;
     justify-content: space-between;
     font-weight: bold;
+    width: 50%;
   }
 `;
 const PriceContainer = styled.div`
    {
     display: flex;
     justify-content: space-between;
+  }
+`;
+
+const ImgContainer = styled.div`
+   {
+    display: flex;
+    width: 40%;
+    justify-content: center;
+  }
+`;
+
+const ButtonsContainer = styled.div`
+   {
+    display: flex;
+    margin: 5px 0;
   }
 `;

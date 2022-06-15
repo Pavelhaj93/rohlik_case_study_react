@@ -9,18 +9,20 @@ const Product = () => {
 
   return (
     <MainContainer>
-      
       <ProductsContainer>
         {products.map((product) => {
           return (
             <ProductCard key={product.id}>
-              <img
-                src={product.image}
-                height={150}
-                width={150}
-                alt="product-img"
-              />
-              <ProductTitle>{product.name}</ProductTitle>
+              <div>
+                <img
+                  src={product.image}
+                  height={150}
+                  alt="product-img"
+                  className="img"
+                  style={{ width: "100%", objectFit: "contain" }}
+                />
+              </div>
+              <h2 style={{ textAlign: "center" }}>{product.name}</h2>
               <ButtonsContainer>
                 <Button
                   style={{ margin: "0 1em" }}
@@ -40,9 +42,15 @@ const Product = () => {
                   Remove from Cart
                 </Button>
               </ButtonsContainer>
-              <ProductPrice>
-                {product.price.full} {product.price.currency}
-              </ProductPrice>
+              <ProductPriceContainer>
+                <h3>Price :</h3>
+                <div>
+                  <h3>
+                    {product.price.full}
+                    {product.price.currency}
+                  </h3>
+                </div>
+              </ProductPriceContainer>
             </ProductCard>
           );
         })}
@@ -53,10 +61,12 @@ const Product = () => {
 
 export default Product;
 
-const MainContainer = styled.div`{
-  width: 100vw;
-  padding-top: 5em;
-}`
+const MainContainer = styled.div`
+   {
+    width: 100vw;
+    padding-top: 8em;
+  }
+`;
 
 const ProductCard = styled.div`
    {
@@ -68,21 +78,22 @@ const ProductCard = styled.div`
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-   
+    padding: 10px;
+
     @media (min-width: 1265px) and (max-width: 1350px) {
-      width: 20%
+      width: 20%;
     }
 
     @media (min-width: 950px) and (max-width: 1264px) {
-      width: 30%
+      width: 30%;
     }
 
     @media (min-width: 600px) and (max-width: 950px) {
-      width: 45%
+      width: 45%;
     }
 
     @media (max-width: 600px) {
-      width: 100%
+      width: 100%;
     }
   }
 `;
@@ -99,17 +110,6 @@ const ProductsContainer = styled.div`
   }
 `;
 
-const ProductTitle = styled.h2`
-   {
-    text-align: center;
-  }
-`;
-
-const ProductPrice = styled.h3`
-   {
-  }
-`;
-
 const ButtonsContainer = styled.div`
    {
     display: flex;
@@ -117,21 +117,11 @@ const ButtonsContainer = styled.div`
   }
 `;
 
-// const QuantityContainer = styled.div`
-//    {
-//     display: flex;
-//     width: 50%;
-//     align-items: center;
-//     justify-content: space-between;
-//   }
-// `;
-
-// const QtyButton = styled.button`
-//    {
-//     background-color: transparent;
-//     height: 3em;
-//     cursor: pointer;
-//     border: 1px solid black;
-//     border-radius: 50%;
-//   }
-// `;
+const ProductPriceContainer = styled.div`
+   {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    text-align: center;
+  }
+`;
