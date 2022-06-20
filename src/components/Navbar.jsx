@@ -30,6 +30,7 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search products..."
+            autoComplete="off"
             onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
             style={{ width: "300px", height: "3em" }}
           />
@@ -49,7 +50,7 @@ const NavContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding: 1em 2em;
-    position: fixed;  
+    position: fixed;
     background-color: white;
     width: 100vw;
     z-index: 3;

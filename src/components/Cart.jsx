@@ -43,6 +43,7 @@ const Cart = () => {
           </EmptyCart>
         )}
 
+
         {cartItems.length >= 1 && (
           <>
             <FullCart>

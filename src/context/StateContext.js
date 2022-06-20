@@ -60,7 +60,7 @@ export const StateContext = ({ children }) => {
     }
   };
 
-  const onDecrease = (product, quantity, onRemove) => {
+  const onDecrease = (product, quantity) => {
 
     // if quantity is 1 we no longer want to decrease qty to 0 so we stop the function 
     if (product.quantity === 1) {
@@ -97,6 +97,7 @@ export const StateContext = ({ children }) => {
   const handleEmpty = () => {
     window.localStorage.removeItem("cartItems");
     setCartItems([]);
+    setTotalPrice(0)
   };
 
   // Setting the total quantities for the red circle at cart icon
