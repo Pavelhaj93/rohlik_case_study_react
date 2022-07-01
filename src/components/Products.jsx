@@ -7,6 +7,8 @@ import { useStateContext } from "../context/StateContext";
 const Product = () => {
   const { products, quantity, onAdd, onRemove } = useStateContext();
 
+  
+
   return (
     <MainContainer>
       <ProductsContainer>

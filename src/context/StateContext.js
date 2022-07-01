@@ -86,6 +86,7 @@ export const StateContext = ({ children }) => {
 
     setCartItems(newCartItems);
     setTotalPrice((totalPrice) => totalPrice - product.quantity * product.price.full )
+    console.log(product)
 
     // When removing the last product, it stayed in the cart because it was always loaded from localStorage so the handleEmpty function is needed to call to clear whole cart
     if (cartItems.length === 1) {
@@ -103,19 +104,19 @@ export const StateContext = ({ children }) => {
   // Setting the total quantities for the red circle at cart icon
   useEffect(() => {
     setTotalQuantities(cartItems.length);
-  }, [cartItems]);
+  }, [cartItems]);  
 
   // Filter logic, if the filter is empty we show all the products, if not we filter if the searchTerm in lowerCase is included in product name
   useEffect(() => {
     if (searchTerm === "") {
       setProducts(data);
     } else {
-      const filteredData = products.filter((product) =>
+      const filteredData = data.filter((product) =>
         product.name.toLowerCase().includes(searchTerm)
       );
       setProducts(filteredData);
     }
-  }, [searchTerm]);
+  }, [searchTerm, data]);
 
   return (
     <Context.Provider
